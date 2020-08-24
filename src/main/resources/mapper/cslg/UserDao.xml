@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cslg.dao.UserDao">
+
+    <select id="login" resultMap="userMap">
+        select user.*, user_role.user_role_id, user_role.role_name
+        from user,
+             user_role
+        where user.user_name = #{userName}
+          and user.user_name = user_role.user_name
+    </select>
+
+    <insert id="registerUsers" parameterType="java.util.List">
+        insert into user(user_name,user_pwd,user_true_name,user_department
+        ,user_email,user_enabled,user_register_time)
+        values
+        <foreach collection="list" item="user" separator="," index="index">
+            (#{user.userName},#{user.userPwd},#{user.userTrueName}
+            ,#{user.userDepartment},#{user.userEmail}
+            ,#{user.userEnabled},#{user.userRegisterTime})
+        </foreach>
+
+    </insert>
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.cslg.entity.UserEntity" id="userMap">
+        <result property="userId" column="user_id"/>
+        <result property="userName" column="user_name"/>
+        <result property="userPwd" column="user_pwd"/>
+        <result property="userTrueName" column="user_true_name"/>
+        <result property="userDepartment" column="user_department"/>
+        <result property="userEmail" column="user_email"/>
+        <result property="userEnabled" column="user_enabled"/>
+        <result property="userRegisterTime" column="user_register_time"/>
+        <collection ofType="com.cslg.entity.UserRoleEntity" property="roles">
+            <id property="userRoleId" column="user_role_id"/>
+            <result property="roleName" column="role_name"/>
+        </collection>
+    </resultMap>
+
+
+</mapper>

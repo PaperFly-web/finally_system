@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cslg.dao.RoomDao">
+
+    <select id="selectRoomByTime" parameterType="com.cslg.entity.RoomOrderEntity" resultMap="roomMap">
+        select * from room where
+                room_id not in (select room_id from room_order
+                                where day=#{et.day}
+                                  and time_slot=#{et.timeSlot}
+                                  and status!=0)
+                             and room_enabled=1
+    </select>
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.cslg.entity.RoomEntity" id="roomMap">
+        <result property="roomId" column="room_id"/>
+        <result property="roomName" column="room_name"/>
+        <result property="roomSeatNumber" column="room_seat_number"/>
+        <result property="roomType" column="room_type"/>
+        <result property="roomDesc" column="room_desc"/>
+        <result property="roomEnabled" column="room_enabled"/>
+        <result property="roomImg" column="room_img"/>
+        <result property="roomLocation" column="room_location"/>
+    </resultMap>
+
+
+</mapper>
