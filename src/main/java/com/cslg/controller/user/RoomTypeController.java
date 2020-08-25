@@ -5,8 +5,6 @@ import com.cslg.entity.RoomTypeEntity;
 import com.cslg.service.RoomTypeService;
 import com.cslg.utils.R;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
@@ -24,12 +22,8 @@ import java.util.Arrays;
  * @date 2020-08-15 12:25:25
  */
 @RestController
-@RequestMapping("cslg/roomtype")
+@RequestMapping("cslg/roomType")
 public class RoomTypeController {
-    /**
-     * 获取用户的信息
-     */
-    private Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
     @Autowired
     private RoomTypeService roomTypeService;
@@ -38,7 +32,6 @@ public class RoomTypeController {
      * 列表
      */
     @PostMapping("/list")
-    //@RequiresPermissions("cslg:roomtype:list")
     public R list(@RequestParam Integer page,@RequestParam Integer pageSize){
         Page<RoomTypeEntity> objectPage = new Page<>(page,pageSize);
         Page<RoomTypeEntity> page1 = roomTypeService.page(objectPage);
@@ -50,7 +43,6 @@ public class RoomTypeController {
      * 信息
      */
     @PostMapping("/info/{roomTypeId}")
-   // @RequiresPermissions("cslg:roomtype:info")
     public R info(@PathVariable("roomTypeId") Long roomTypeId){
 		RoomTypeEntity roomType = roomTypeService.getById(roomTypeId);
         return R.ok().put("data", roomType);
@@ -60,7 +52,6 @@ public class RoomTypeController {
      * 保存
      */
     @PostMapping("/save")
-    //@RequiresPermissions("cslg:roomtype:save")
     public R save( RoomTypeEntity roomType){
 		roomTypeService.save(roomType);
 
@@ -71,7 +62,6 @@ public class RoomTypeController {
      * 修改
      */
     @PostMapping("/update")
-    //@RequiresPermissions("cslg:roomtype:update")
     public R update( RoomTypeEntity roomType){
 		roomTypeService.updateById(roomType);
 
@@ -82,7 +72,6 @@ public class RoomTypeController {
      * 删除
      */
     @PostMapping("/delete")
-   // @RequiresPermissions("cslg:roomtype:delete")
     public R delete( Long[] roomTypeIds){
 		roomTypeService.removeByIds(Arrays.asList(roomTypeIds));
 

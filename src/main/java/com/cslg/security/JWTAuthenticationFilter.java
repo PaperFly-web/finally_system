@@ -120,8 +120,6 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         UserEntity userEntity=new UserEntity();
         userEntity.setUserName(authentication.getName());
         userEntity.setRoles(userAuthList);
-        Object principal = authentication.getPrincipal();
-        System.out.println(principal.getClass().getName());
         r = R.ok().put("data", userEntity).put("token", token);
         out.write(JSONUtil.toJsonStr(r));
         out.flush();

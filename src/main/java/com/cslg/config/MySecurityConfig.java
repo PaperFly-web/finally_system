@@ -1,26 +1,32 @@
 package com.cslg.config;
 
 
+import cn.hutool.json.JSONUtil;
+import com.cslg.entity.UserEntity;
 import com.cslg.handler.MyLogoutHandler;
 import com.cslg.properties.JwtProperties;
-import com.cslg.security.JWTAuthenticationEntryPoint;
-import com.cslg.security.JWTAuthenticationFilter;
-import com.cslg.security.JWTAuthorizationFilter;
 import com.cslg.service.MyUserDetailsService;
 import com.cslg.service.UserLogService;
+import com.cslg.utils.CommonUtil;
+import com.cslg.utils.R;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.authentication.*;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.PrintWriter;
+import java.util.Collection;
+import java.util.List;
 
 
 /**
@@ -46,7 +52,7 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
     @Qualifier("MyUserDetailsService")
     MyUserDetailsService myUserDetailsService;
 
-    //给资源授权
+    /*//给资源授权
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         //设置权限管理规则
@@ -68,6 +74,7 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 // 异常处理
                 .exceptionHandling()
+                .accessDeniedHandler(new MyAccessDeniedHandler())
                 // 认证失败的异常处理
                 .authenticationEntryPoint(new JWTAuthenticationEntryPoint());
 
@@ -89,9 +96,9 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
                 //退出登录
                 .logoutSuccessHandler(new MyLogoutHandler());
 
-    }
+    }*/
     //测试使用
-    /*//给资源授权
+    //给资源授权
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         //设置权限管理规则
@@ -109,14 +116,19 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
                 .successHandler((req, resp, authentication) -> {//登录成功
                     resp.setContentType("application/json;charset=utf-8");
                     PrintWriter out = resp.getWriter();
-                    out.write(JSONUtil.toJsonStr(R.ok().put("data",authentication.getPrincipal())) );
+                    Collection<GrantedAuthority> authorities = ((User) authentication.getPrincipal()).getAuthorities();
+                    List userAuthList = CommonUtil.getUserAuthList(authorities);
+                    UserEntity userEntity=new UserEntity();
+                    userEntity.setUserName(authentication.getName());
+                    userEntity.setRoles(userAuthList);
+                    out.write(JSONUtil.toJsonStr(R.ok().put("data",userEntity).put("token", "eyJ0eXBlIjoiSldUIiwiYWxnIjoiSFMyNTYifQ.eyJyb2xlIjpbIjEiLCIyIl0sInVzZXJOYW1lIjoiMSIsInJlbWVtYmVyIjpmYWxzZSwiaXNzIjoicGFwZXJmbHkiLCJpYXQiOjE1OTgyMzczMzksImV4cCI6MTU5ODMyMzczOX0.wKc7L1R5MGD84v-ej7VlWGWCCN4qZ7L0wNPAxxaJV7M")) );
                     out.flush();
                     out.close();
                 })//前后端分离
                 .failureHandler((req, resp, e) -> {//登录失败
                     R r;
                     if (e instanceof LockedException) {
-                        r=R.error("账户被锁定，请联系管理员!").put("code",403);
+                        r= R.error("账户被锁定，请联系管理员!").put("code",403);
                     } else if (e instanceof CredentialsExpiredException) {
                         r=R.error("密码过期，请联系管理员!").put("code",403);
                     } else if (e instanceof AccountExpiredException) {
@@ -144,7 +156,7 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
                 //退出登录
                 .logoutSuccessHandler(new MyLogoutHandler());
 
-    }*/
+    }
 
 
     @Override

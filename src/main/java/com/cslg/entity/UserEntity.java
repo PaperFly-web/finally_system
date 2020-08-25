@@ -82,6 +82,11 @@ public class UserEntity extends BaseRowModel implements Serializable {
 	private List<UserRoleEntity> roles;
 
 	/**
+	 * 修改密码时候用的
+	 */
+	@TableField(exist = false)
+	private String userOldPwd;
+	/**
 	 * 分页查询
 	 */
 	@TableField(exist = false)

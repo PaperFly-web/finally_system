@@ -1,20 +1,16 @@
-package com.cslg.controller.user;
+package com.cslg.controller.admin;
 
 import com.cslg.entity.RoleEntity;
 import com.cslg.service.RoleService;
 import com.cslg.utils.PageUtils;
 import com.cslg.utils.R;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.Map;
 
 //import org.apache.shiro.authz.annotation.RequiresPermissions;
-
-
 
 
 /**
@@ -25,12 +21,8 @@ import java.util.Map;
  * @date 2020-08-15 12:25:25
  */
 @RestController
-@RequestMapping("cslg/role")
-public class RoleController {
-    /**
-     * 获取用户的信息
-     */
-    private Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+@RequestMapping("admin/cslg/role")
+public class AdminRoleController {
 
     @Autowired
     private RoleService roleService;
@@ -39,7 +31,6 @@ public class RoleController {
      * 列表
      */
     @PostMapping("/list")
-    //@RequiresPermissions("cslg:role:list")
     public R list(@RequestParam Map<String, Object> params){
         PageUtils page = roleService.queryPage(params);
 
@@ -51,7 +42,6 @@ public class RoleController {
      * 信息
      */
     @PostMapping("/info/{roleId}")
-   // @RequiresPermissions("cslg:role:info")
     public R info(@PathVariable("roleId") Long roleId){
 		RoleEntity role = roleService.getById(roleId);
 
@@ -62,7 +52,6 @@ public class RoleController {
      * 保存
      */
     @PostMapping("/save")
-    //@RequiresPermissions("cslg:role:save")
     public R save( RoleEntity role){
 		roleService.save(role);
 
@@ -73,7 +62,6 @@ public class RoleController {
      * 修改
      */
     @PostMapping("/update")
-    //@RequiresPermissions("cslg:role:update")
     public R update( RoleEntity role){
 		roleService.updateById(role);
 
@@ -84,7 +72,6 @@ public class RoleController {
      * 删除
      */
     @PostMapping("/delete")
-   // @RequiresPermissions("cslg:role:delete")
     public R delete(Long[] roleIds){
 		roleService.removeByIds(Arrays.asList(roleIds));
 

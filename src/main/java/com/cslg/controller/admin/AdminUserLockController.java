@@ -1,19 +1,16 @@
-package com.cslg.controller.user;
+package com.cslg.controller.admin;
 
 import com.cslg.entity.UserLockEntity;
 import com.cslg.service.UserLockService;
 import com.cslg.utils.PageUtils;
 import com.cslg.utils.R;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.Map;
 
 //import org.apache.shiro.authz.annotation.RequiresPermissions;
-
 
 
 /**
@@ -24,12 +21,8 @@ import java.util.Map;
  * @date 2020-08-15 12:25:25
  */
 @RestController
-@RequestMapping("cslg/userlock")
-public class UserLockController {
-    /**
-     * 获取用户的信息
-     */
-    private Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+@RequestMapping("admin/cslg/userLock")
+public class AdminUserLockController {
 
     @Autowired
     private UserLockService userLockService;
@@ -38,11 +31,9 @@ public class UserLockController {
      * 列表
      */
     @PostMapping("/list")
-    //@RequiresPermissions("cslg:userlock:list")
     public R list(@RequestParam Map<String, Object> params){
         PageUtils page = userLockService.queryPage(params);
-
-        return R.ok().put("page", page);
+        return R.ok().put("data", page);
     }
 
 

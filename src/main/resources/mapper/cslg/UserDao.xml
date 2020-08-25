@@ -20,7 +20,6 @@
             ,#{user.userDepartment},#{user.userEmail}
             ,#{user.userEnabled},#{user.userRegisterTime})
         </foreach>
-
     </insert>
     <!-- 可根据自己的需求，是否要使用 -->
     <resultMap type="com.cslg.entity.UserEntity" id="userMap">

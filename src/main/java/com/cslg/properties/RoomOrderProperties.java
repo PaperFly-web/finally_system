@@ -11,6 +11,31 @@ public class RoomOrderProperties {
     private static String four="19:30->22:00";
 
     /**
+     * 历史被拒绝的订单状态
+     */
+    public static final Integer HISTORY_REJ_STATUS=3;
+    /**
+     * 历史通过的订单状态
+     */
+    public static final Integer HISTORY_PASS_STATUS=2;
+    /**
+     * 被拒绝的订单状态
+     */
+    public static final Integer NOW_REJ_STATUS=0;
+    /**
+     * 通过的订单状态
+     */
+    public static final Integer NOW_PASS_STATUS=1;
+    /**
+     * 默认订单状态
+     */
+    public static final Integer DEFAULT_STATUS=-1;
+
+    /**
+     * 默认禁止修改时间
+     */
+    public static final Integer DEFAULT_OVER_TIME=30;
+    /**
      * 会议室时间段的开始结束时间的毫秒时间
      */
     public static Long start_one= 1000*60*60*9L;
@@ -84,6 +109,13 @@ public class RoomOrderProperties {
         return format;
     }
 
+    /**
+     * 获取使用时期的毫秒数，
+     * @param date，申请的日期
+     * @param timeSlot，申请的时间段
+     * @param isStart，获取的是开始还是结束时间的毫秒数
+     * @return
+     */
     public static Long getMills(Date date,Integer timeSlot,Boolean isStart){
         if(timeSlot==1){
             if(isStart){

@@ -1,12 +1,10 @@
-package com.cslg.controller.user;
+package com.cslg.controller.admin;
 
 import com.cslg.entity.UserRoleEntity;
 import com.cslg.service.UserRoleService;
 import com.cslg.utils.PageUtils;
 import com.cslg.utils.R;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
@@ -23,12 +21,8 @@ import java.util.Map;
  * @date 2020-08-15 12:25:25
  */
 @RestController
-@RequestMapping("cslg/userrole")
-public class UserRoleController {
-    /**
-     * 获取用户的信息
-     */
-    private Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+@RequestMapping("admin/cslg/userRole")
+public class AdminUserRoleController {
 
     @Autowired
     private UserRoleService userRoleService;
@@ -37,7 +31,6 @@ public class UserRoleController {
      * 列表
      */
     @PostMapping("/list")
-    //@RequiresPermissions("cslg:userrole:list")
     public R list(@RequestParam Map<String, Object> params){
         PageUtils page = userRoleService.queryPage(params);
 
@@ -49,7 +42,6 @@ public class UserRoleController {
      * 信息
      */
     @PostMapping("/info/{userRoleId}")
-   // @RequiresPermissions("cslg:userrole:info")
     public R info(@PathVariable("userRoleId") Long userRoleId){
 		UserRoleEntity userRole = userRoleService.getById(userRoleId);
 
@@ -60,7 +52,6 @@ public class UserRoleController {
      * 保存
      */
     @PostMapping("/save")
-    //@RequiresPermissions("cslg:userrole:save")
     public R save( UserRoleEntity userRole){
 		userRoleService.save(userRole);
 
@@ -71,7 +62,6 @@ public class UserRoleController {
      * 修改
      */
     @PostMapping("/update")
-    //@RequiresPermissions("cslg:userrole:update")
     public R update( UserRoleEntity userRole){
 		userRoleService.updateById(userRole);
 
@@ -82,7 +72,6 @@ public class UserRoleController {
      * 删除
      */
     @PostMapping("/delete")
-   // @RequiresPermissions("cslg:userrole:delete")
     public R delete( Long[] userRoleIds){
 		userRoleService.removeByIds(Arrays.asList(userRoleIds));
 

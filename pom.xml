@@ -11,7 +11,10 @@
 
     <artifactId>01-finally_system</artifactId>
     <dependencies>
-
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
         <!--读取excel文件等-->
         <dependency>
             <groupId>com.alibaba</groupId>

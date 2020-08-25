@@ -1,12 +1,16 @@
 package com.cslg.entity;
 
+import com.alibaba.excel.metadata.BaseRowModel;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
+import org.apache.poi.ss.usermodel.CellStyle;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 这个表主要是防止用户频繁登陆错误  频繁获取验证码等，超过限制就锁定一段时间
@@ -17,7 +21,7 @@ import java.util.Date;
  */
 @Data
 @TableName("user_lock")
-public class UserLockEntity implements Serializable {
+public class UserLockEntity extends BaseRowModel implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -42,4 +46,10 @@ public class UserLockEntity implements Serializable {
 	 */
 	@TableField(exist = false)
 	private Integer page;
+
+	/**
+	 * 去除继承的类在mybatisplus中的影响
+	 */
+	@TableField(exist = false)
+	private Map<Integer, CellStyle> cellStyleMap = new HashMap<Integer,CellStyle>();
 }

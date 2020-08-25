@@ -5,7 +5,6 @@ import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.metadata.Sheet;
 import com.alibaba.excel.support.ExcelTypeEnum;
 import com.cslg.Listener.ExcelListener;
-import com.cslg.entity.UserEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpStatus;
 import org.springframework.web.multipart.MultipartFile;
@@ -68,7 +67,7 @@ public class MyFileUtil {
             }
         }
     }
-    public static void downloadExcel(HttpServletResponse response,List list,String fileName){
+    public static void downloadExcel(HttpServletResponse response,List list,Class c,String fileName){
         //设置文件名字
         response.setHeader("Content-disposition", "attachment; filename=" + fileName);
         //设置响应文件类型
@@ -80,7 +79,7 @@ public class MyFileUtil {
 
             ExcelWriter excelWriter =new ExcelWriter(out, ExcelTypeEnum.XLS, true);
             // 写仅有一个 Sheet 的 Excel 文件, 此场景较为通用
-            Sheet sheet1 = new Sheet(1, 0, UserEntity.class);
+            Sheet sheet1 = new Sheet(1, 0, c);
 
             // 第一个 sheet 名称
             sheet1.setSheetName("第一个sheet");
@@ -102,7 +101,6 @@ public class MyFileUtil {
                 e.printStackTrace();
             }
         }
-
-
     }
+
 }

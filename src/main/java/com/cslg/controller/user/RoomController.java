@@ -10,12 +10,9 @@ import com.cslg.utils.CommonUtil;
 import com.cslg.utils.R;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
 import java.util.List;
 
 //import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -32,18 +29,13 @@ import java.util.List;
 @RestController
 @RequestMapping("cslg/room")
 public class RoomController {
-    /**
-     * 获取用户的信息
-     */
-    private Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
     @Autowired
     private RoomService roomService;
 
     /**
      * 通过时间查询空闲会议室
-     * @param day
-     * @param timeSlot
+     * 需要日期，时间段，页数，每页尺寸
      * @return
      */
     @PostMapping("/selectRoomByTime")
@@ -63,7 +55,6 @@ public class RoomController {
      * 列表,用户只能查询开放使用的会议室
      */
     @PostMapping("/list")
-    //@RequiresPermissions("cslg:room:list")
     public R list( Integer page, Integer pageSize){
         QueryWrapper<RoomEntity> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("room_enabled",1);

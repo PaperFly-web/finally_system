@@ -1,11 +1,15 @@
 package com.cslg.entity;
 
+import com.alibaba.excel.metadata.BaseRowModel;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
+import org.apache.poi.ss.usermodel.CellStyle;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 
@@ -16,7 +20,7 @@ import java.io.Serializable;
  */
 @Data
 @TableName("user_role")
-public class UserRoleEntity implements Serializable {
+public class UserRoleEntity extends BaseRowModel implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -37,4 +41,10 @@ public class UserRoleEntity implements Serializable {
 	 */
 	@TableField(exist = false)
 	private Integer page;
+
+	/**
+	 * 去除继承的类在mybatisplus中的影响
+	 */
+	@TableField(exist = false)
+	private Map<Integer, CellStyle> cellStyleMap = new HashMap<Integer,CellStyle>();
 }
